@@ -23,7 +23,6 @@ import cProfile
 from multiprocessing import Pool
 import random
 
-
 TESTINGFRACTION = 0.05
 CONTINUOUSROUNDING = 1
 ATTENTIONCANROTATE = True
@@ -603,7 +602,7 @@ class RecognitionModel():
                 self.session.run(initializer)
             else:
                 saver.restore(self.session, self.checkpointPath)
-            
+            epochdata = []
             for e in range(100):
                 epicLoss = []
                 epicAccuracy = []
@@ -624,8 +623,16 @@ class RecognitionModel():
                     testingAccuracy.append(self.session.run(self.averageAccuracy, feed_dict = feed))
                 print "\tTesting accuracy = %f"%(sum(testingAccuracy)/len(testingAccuracy))
                 print "Saving checkpoint: %s" % saver.save(self.session, self.checkpointPath)
+                epochdata.append((e+1, sum(epicAccuracy)/len(epicAccuracy),sum(epicLoss)/len(epicLoss), sum(testingAccuracy)/len(testingAccuracy)))
                 flushEverything()
-
+            
+            import csv
+            with open('epochData.csv', 'w') as writeFile:
+                writer = csv.writer(writeFile)
+                writer.writerows(epochdata)	
+            writeFile.close()
+            
+            
     def makeTrainingFeed(self, targets, programs):
         # goal, current, predictions
         gs = []
@@ -883,7 +890,7 @@ class DistanceModel():
                 self.session.run(initializer)
             else:
                 saver.restore(self.session, self.checkpointPath)
-            for e in range(20):
+            for e in range(25):
                 runningAverage = 0.0
                 runningAverageCount = 0
                 lastUpdateTime = time()

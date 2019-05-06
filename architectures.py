@@ -48,7 +48,7 @@ class Architecture():
                                      pool_size = self.poolSizes[0],
                                      strides = self.poolStrides[0],
                                      padding = "same")
-
+        c1 = tf.layers.batch_normalization(inputs = c1)
         numberOfFilters = self.numberOfFilters
         kernelSizes = self.kernelSizes[1:]        
         poolSizes = self.poolSizes[1:]
@@ -65,7 +65,9 @@ class Architecture():
                                          pool_size = poolSize,
                                          strides = poolStride,
                                          padding = "same")
+            c1 = tf.layers.batch_normalization(inputs = c1)							 
             nextInput = c1
+        #nextInput = tf.layers.dropout(inputs = nextInput, rate = 0.3)
         return nextInput
 
 architectures = {}

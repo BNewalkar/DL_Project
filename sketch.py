@@ -193,10 +193,11 @@ bit renderSpecification(SHAPEVARIABLES) {
                                                                 fd.name, outputFile, outputFile))
 
     output = open(outputFile,'r').read()
+    print output
     os.remove(fd.name)
     os.remove(outputFile)
 
-    if 'Sketch front-end timed out' in output or 'The sketch cannot be resolved' in output:
+    if 'Sketch front-end timed out' in output or 'The sketch cannot be resolved' in output:	
         return None
 
     # Recover the program length from the sketch output

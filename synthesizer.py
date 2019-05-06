@@ -70,6 +70,7 @@ class SynthesisJob():
                                    canReflect = self.canReflect,
                                    CPUs = parallelSolving,
                                    timeout = timeout)
+
         elapsedTime = time.time() - startTime
         
         return SynthesisResult(self,
@@ -670,6 +671,7 @@ if __name__ == '__main__':
                              incremental = arguments.incremental)
             print j
             s = j.execute()
+
             if arguments.incremental:
                 print "Sketch output for each job:"
                 for o in s.source:
